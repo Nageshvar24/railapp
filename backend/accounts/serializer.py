@@ -22,7 +22,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         password = validated_data.pop("password")
         user = User(**validated_data)
         user.set_password(password)
-        user.plain_password = password
         user.save()
         return user
 
@@ -36,7 +35,7 @@ class LoginSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
-        data = super().validate(attrs) 
+        data = super().validate(attrs)
         data["role"] = self.user.role
         data["username"] = self.user.username
         return data

@@ -1,8 +1,12 @@
 import axios from "axios";
 
-// Keep your existing baseURL if it is different
+// Deploy pe VITE_API_URL set karo. Na ho to neeche wala URL use hoga.
+const API_URL = (
+  import.meta.env.VITE_API_URL || "https://railway-backend-l4yh.onrender.com/api"
+).replace(/\/+$/, "");
+
 const api = axios.create({
-  baseURL: "https://railway-backend-l4yh.onrender.com/api/",
+  baseURL: `${API_URL}/`,
 });
 
 // Endpoints that must not receive (or trigger a refresh with) an access token
@@ -24,7 +28,6 @@ api.interceptors.request.use((config) => {
 });
 
 // 2) If the access token has expired, get a new one with the refresh token and retry.
-//    One shared request is used so several failing calls refresh only once.
 let refreshPromise = null;
 
 const refreshAccessToken = () => {
@@ -53,7 +56,6 @@ api.interceptors.response.use(
 
     if (!expired) return Promise.reject(error);
 
-    // Already retried once, or there is no refresh token: the session is over
     if (original._retry || !localStorage.getItem("refresh")) {
       goToLogin();
       return Promise.reject(error);
@@ -65,7 +67,7 @@ api.interceptors.response.use(
       original.headers.Authorization = `Bearer ${newAccess}`;
       return api(original);
     } catch (refreshError) {
-      goToLogin(); // refresh token also expired or invalid
+      goToLogin();
       return Promise.reject(refreshError);
     }
   }
