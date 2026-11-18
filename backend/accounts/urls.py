@@ -1,14 +1,22 @@
+
 from django.urls import path
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from .views import AdminPingView, AdminUserListView, LoginView, LogoutView, MeView, RegisterView
+from .views import (
+    AdminPingView,
+    AdminUserListView,
+    LoginView,
+    LogoutView,
+    MeView,
+    RegisterView,
+)
 
 urlpatterns = [
-    path("register/", RegisterView.as_view()),
-    path("login/", LoginView.as_view()),
-    path("logout/", LogoutView.as_view()),
-    path("refresh/", TokenRefreshView.as_view()),
-    path("me/", MeView.as_view()),
-    path("admin/ping/", AdminPingView.as_view()),
-    path("admin/users/", AdminUserListView.as_view()),
+    path("register/", RegisterView.as_view(), name="register"),
+    path("login/", LoginView.as_view(), name="login"),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path("refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("me/", MeView.as_view(), name="me"),
+    path("admin/ping/", AdminPingView.as_view(), name="admin_ping"),
+    path("admin/users/", AdminUserListView.as_view(), name="admin_users"),
 ]

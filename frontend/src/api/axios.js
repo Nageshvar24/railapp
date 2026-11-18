@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Keep your existing baseURL if it is different
 const api = axios.create({
-  baseURL: "https://railway-backend-l4yh.onrender.com",
+  baseURL: "https://railway-backend-l4yh.onrender.com/api/",
 });
 
 // Endpoints that must not receive (or trigger a refresh with) an access token
